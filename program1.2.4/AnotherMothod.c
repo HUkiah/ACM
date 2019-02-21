@@ -65,19 +65,37 @@ char * CalculateResult(char oper, int perv, int next)
 
 int main()
 {
-	int n;
-	char *result;
+	int i, s, n;
+	char **result;
 	scanf("%d\n", &n);
-	while (n--)
+	result = (char **)malloc(sizeof(char *)*n);
+	if (NULL == result)
+	{
+		printf("No enough memory!");
+		return 0;
+	}
+	s = n;
+	while (s--)
 	{
 		char oper;
 		int perv, next;
 		scanf("%c%d%d", &oper, &perv, &next);
 		getchar();
-		result = CalculateResult(oper, perv, next);
-		printf("%s\n",result);
-		free(result);
+		*(result + s) = CalculateResult(oper, perv, next);
 	}
+
+	for (i = n - 1; i >= 0; i--)
+	{
+		printf("%s\n", *(result + i));
+	}
+
+	s = n;
+	while (s--)
+	{
+		free(*(result + s));
+	}
+
+	free(result);
 
 	return 0;
 }
