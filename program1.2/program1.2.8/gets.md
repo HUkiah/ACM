@@ -63,7 +63,7 @@ char * GetStr()
 
 
 
-补充下面是除名getsf后推荐的fgets函数
+补充下面是除名**gets**后推荐的**fgets**函数
 
 ```c
 char *fgets(char *s, int n,  FILE *stream)
