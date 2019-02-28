@@ -19,7 +19,7 @@ bool find(int x)
 		if (line[x][i] == 't' && used[i] == 'f')
 		{
 			used[i] = 't';
-			if (king[i] == i || find(king[i]))
+			if (king[i] == 0 || find(king[i]))
 			{
 				king[i] = x;
 				return true;
@@ -31,14 +31,15 @@ bool find(int x)
 
 int main()
 {
-	int s, n,eq=0;
+	int s, n;
 	scanf("%d", &n);
 
 	while (n != 0)
 	{
-		int i, ans = 0;
+		int i, j, ans = 0,eq=0;
 		//替换n,参与操作
 		s = n;
+		printf("n:%d\n",n);
 
 		memset(line, 'f', sizeof(line));
 		memset(used, 'f', sizeof(used));
@@ -55,7 +56,7 @@ int main()
 		{
 			int m;
 			scanf("%d", &m);
-			king[m] = m;
+			//king[m] = m;
 			for (i = 1; i < N; i++)
 			{
 				if (TJ[i]>=m)
@@ -63,11 +64,12 @@ int main()
 					if(TJ[i]==m)
 					{
 						line[TJ[i]][m] = 'e';
-						continue;
+						printf("%d -> %d\n", TJ[i], m);
+							continue;
 					}
 					line[TJ[i]][m] = 't';
 
-					//printf("%d -> %d\n", TJ[i], m);
+					printf("%d -> %d\n", TJ[i], m);
 				}
 			}
 		}
@@ -85,7 +87,36 @@ int main()
 			}
 		}
 
-		printf("%d\n", (2 * ans - n+eq) * 200);
+		for(i=N-1;i>=1;i--)
+		{
+			if(TJ[i])
+			{
+				printf("%d\n",TJ[i]);
+				memset(used,'f',N);
+				for( j=N-1;j>=1;j--)
+				{
+					if(line[i][j]=='e'&&used[j]=='f')
+					{
+						if(king[j]!=i)
+						{
+							eq++;
+							used[j]='t';
+							break;
+						}
+						
+					}
+				}
+			}
+		}
+
+		printf("ans:%d,eq:%d\n",ans,eq);
+
+		if((ans+eq)==n)
+			printf("%d\n",ans*200);
+		else
+			printf("%d\n", (2 * ans - n+eq) * 200);
+
+		
 
 		//printf("边的关系：\n");
 		//for (i = N - 1; i >= 1; i--)
