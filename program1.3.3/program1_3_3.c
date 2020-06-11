@@ -1,11 +1,12 @@
 #include<stdio.h>
+#include<stdlib.h>
 
 #define N 1000
 #define M 10
 
-struct student
+typedef struct student
 {
-	char num[20];
+	char * Id;
 	int score;
 } Student;
 
@@ -42,15 +43,28 @@ char * GetStr()
 	return str;
 }
 
+Student * GetStudent(char * Id,int score)
+{
+	Student * str;
+
+	str=(Student *)malloc(sizeof(Student));
+	str->Id = Id;
+	str->score = score;
+	return str;
+}
+
 int main()
 {
 	int i,n;
+	//考生人数n
 	scanf("%d",&n);
 	while(n!=0)
 	{
-		int m,g;
+		int m,g,j,score=0,temp;
+		//考题数m,分数线g
 		int mnum[M];
-		char (*p)[N];
+		char * p;
+		Student *stu[N];
 		scanf("%d%d",&m,&g);
 		printf("m:%d,g:%d\n",m,g);
 		for(i=0;i<m;i++)
@@ -60,18 +74,34 @@ int main()
 		//考生号 题目总数 题号(1-M)
 		for(i=0;i<n;i++)
 		{
-			*p[i]=GetStr();
-
+			p=GetStr();
+			scanf("%d",&j);
+			while(j--)
+			{
+				scanf("%d",&temp);
+				score+=mnum[temp-1];
+			}
+			stu[i]=GetStudent(p,score);
 		}
 
+		//输出
+		//不低于分数线的考生人数
+		//分数高低 输出Student信息
+		printf("output g:%d",g);
 		for(i=0;i<n;i++)
 		{
-			printf("%s\n",*p[i]);
+			if(stu[i]->score>=g)
+			{
+				printf("%s %d\n",stu[i]->Id,stu[i]->score);
+			}
+			
 		}
 
 
 		scanf("%d",&n);
 	}
+
+
 
 	return 0;
 }
